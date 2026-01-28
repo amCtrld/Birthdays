@@ -14,6 +14,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { submitBirthday } from '@/app/actions/birthday-actions';
+import { Loader2 } from 'lucide-react';
 
 interface SubmissionFormProps {
   onSubmit: (data: any) => void;
@@ -231,7 +232,7 @@ export function SubmissionForm({ onSubmit }: SubmissionFormProps) {
       >
         {isLoading ? (
           <span className="flex items-center gap-2">
-            <span className="animate-spin">⏳</span>
+            <Loader2 className="animate-spin h-5 w-5" />
             Submitting...
           </span>
         ) : (

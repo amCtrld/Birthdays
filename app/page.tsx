@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Confetti from 'react-confetti';
+import { ExternalLink, Search } from 'lucide-react';
 import { ScatteredWall } from '@/components/scattered-wall';
 import { SubmissionForm } from '@/components/submission-form';
 import { getAllBirthdays } from '@/app/actions/birthday-actions';
@@ -119,6 +120,7 @@ export default function Home() {
             onChange={(e) => setSearchQuery(e.target.value)}
             className="w-full px-4 py-2 rounded-full border border-border bg-background/50 text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary transition-colors"
           />
+          <Search className="absolute right-10 top-1/2 -translate-y-1/2 text-muted-foreground" />
         </div>
       </div>
 
@@ -165,7 +167,7 @@ export default function Home() {
       <footer>
         <div className="w-full py-6 px-4 border-t border-border mt-12 text-center text-sm text-muted-foreground">
           <p>
-            &copy; {new Date().getFullYear()} Bowl Technologies, Inc. All rights reserved.
+            Started by <a href="https://mbugua.nijue.me" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 hover:text-foreground transition-colors font-bold">Mbugua<ExternalLink className="w-3 h-3" /></a> — to be continued by many.
           </p>
         </div>
       </footer>

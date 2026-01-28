@@ -26,12 +26,12 @@ const monthNames = [
 
 // Birthday color palette for variety
 const birthdayColors = [
-  'from-pink-500 to-rose-500',
-  'from-purple-500 to-indigo-500',
-  'from-blue-500 to-cyan-500',
-  'from-green-500 to-emerald-500',
-  'from-yellow-500 to-orange-500',
-  'from-red-500 to-pink-500',
+  'from-pink-700 to-rose-800',
+  'from-purple-700 to-indigo-700',
+  'from-blue-700 to-cyan-700',
+  'from-green-700 to-emerald-700',
+  'from-yellow-700 to-orange-700',
+  'from-red-700 to-pink-700',
 ];
 
 function formatDate(month: number, day: number): string {
@@ -39,7 +39,29 @@ function formatDate(month: number, day: number): string {
 }
 
 // Confetti emoji for decoration
-const confettiEmojis = ['🎉', '🎂', '🎈', '🎁', '🎊', '🥳', '🍰', '🎀'];
+const confettiEmojis  = [
+  // Party & Celebration
+  '🎉', '🎊', '🥳', '✨', '💫', '🌟', '🎶', '🎵',
+
+  // Cakes & Sweets
+  '🎂', '🍰', '🧁', '🍩', '🍪', '🍬', '🍫', '🍭',
+
+  // Balloons & Decorations
+  '🎈', '🎀', '🎏', '🎐', '🎇', '🎆',
+
+  // Gifts & Surprises
+  '🎁', '💝', '💖', '💐', '🌹',
+
+  // Drinks & Toasts
+  '🍷', '🥂', '🍾', '🍸', '🍹', '🍺',
+
+  // Happy Faces
+  '😊', '😃', '😁', '😎', '🤩', '😍',
+
+  // Extra Festive Touches
+  '👑', '🎤', '🎧'
+];
+
 
 function getRandomConfetti() {
   return confettiEmojis[Math.floor(Math.random() * confettiEmojis.length)];
@@ -154,7 +176,7 @@ export function ScatteredWall({ birthdays, onWishSent }: ScatteredWallProps) {
             bg-gradient-to-br ${colorClass}
             shadow-lg hover:shadow-2xl
             transition-all duration-300 hover:scale-105
-            border-4 border-white dark:border-neutral-800
+            border-4 border-white/50 dark:border-neutral-800
           `}>
             {/* Sparkle effect overlay */}
             <div className="absolute inset-0 opacity-20">
