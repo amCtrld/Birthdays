@@ -8,9 +8,8 @@ const _geist = Geist({ subsets: ["latin"] });
 const _geistMono = Geist_Mono({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: 'Birthday Wall - Never Forget Again',
-  description: 'A celebratory wall of fame where we celebrate your birthday. Submit your birthday and receive a special email when the day arrives.',
-  generator: 'v0.app',
+  title: 'Birthday Queue - Never Forget Again',
+  description: 'A celebratory birthday queue where we celebrate your birthday. Submit your birthday and receive a special email when the day arrives.',
   icons: {
     icon: [
       {
