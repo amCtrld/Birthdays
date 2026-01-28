@@ -38,4 +38,10 @@ Before contributing, read:
 
 _________________________________________________________
 
+## License
+
+MIT
+
+## Credits
+
 Started by [Mbugua](https://mbugua.nijue.me) — to be continued by many.
