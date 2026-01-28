@@ -10,6 +10,28 @@ const _geistMono = Geist_Mono({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: 'Birthday Queue - Never Forget Again',
   description: 'A celebratory birthday queue where we celebrate your birthday. Submit your birthday and receive a special email when the day arrives.',
+  openGraph: {
+    title: 'Birthday Queue - Never Forget Again',
+    description: 'A celebratory birthday queue where we celebrate your birthday. Submit your birthday and receive a special email when the day arrives.',
+    url: 'https://bdqueue.nijue.me',
+    siteName: 'BDQueue',
+    images: [
+      {
+        url: '/og-image.png',
+        width: 1200,
+        height: 630,
+        alt: 'Birthday Queue - Never Forget Birthdays Again',
+      },
+    ],
+    locale: 'en_US',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Birthday Queue - Never Forget Again',
+    description: 'A celebratory birthday queue where we celebrate your birthday. Submit your birthday and receive a special email when the day arrives.',
+    images: ['/og-image.png'],
+  },
   icons: {
     icon: [
       {
