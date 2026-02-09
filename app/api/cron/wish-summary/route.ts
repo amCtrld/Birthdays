@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { sendWishSummaryEmails } from '@/app/actions/birthday-actions';
+import { sendWishSummaryEmails, sendBirthdaySelectionNotifications } from '@/app/actions/birthday-actions';
 
 /**
  * GET /api/cron/wish-summary
@@ -20,7 +20,10 @@ export async function GET(request: NextRequest) {
       );
     }
 
+    // Send wish summary emails
     const result = await sendWishSummaryEmails();
+    // Send birthday selection notifications
+    await sendBirthdaySelectionNotifications();
 
     if (result.success) {
       return NextResponse.json({

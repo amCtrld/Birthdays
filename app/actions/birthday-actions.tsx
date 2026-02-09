@@ -2,6 +2,7 @@
 
 import { resendConfig, db } from '@/lib/firebase';
 import { collection, addDoc, getDocs, getDoc, doc, updateDoc, orderBy, query, where } from 'firebase/firestore';
+import { getAllUserSelections } from '@/app/actions/get-all-user-selections';
 
 interface BirthdaySubmission {
   name: string;
@@ -400,4 +401,67 @@ export async function sendBirthdayEmail(email: string, name: string) {
   } catch (error) {
     console.error('Error sending birthday email:', error);
   }
+}
+
+/**
+ * Send notification emails to users for their selected birthdays (cron job)
+ */
+export async function sendBirthdaySelectionNotifications() {
+  try {
+    const today = new Date();
+    const todayMonth = today.getMonth() + 1;
+    const todayDay = today.getDate();
+    // Get all user selections
+    const userSelections = await getAllUserSelections();
+    // Get all birthdays for today
+    const q = query(
+      collection(db, 'birthdays'),
+      where('month', '==', todayMonth),
+      where('day', '==', todayDay)
+    );
+    const birthdaySnapshot = await getDocs(q);
+    const todayBirthdays = birthdaySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    // For each user, check if any of their selected birthdays are today
+    for (const user of userSelections) {
+      const { email, selectedBirthdayIds } = user;
+      const birthdaysToNotify = todayBirthdays.filter(b => selectedBirthdayIds.includes(b.id));
+      if (birthdaysToNotify.length > 0) {
+        await sendSelectionNotificationEmail(email, birthdaysToNotify);
+      }
+    }
+    return { success: true };
+  } catch (error) {
+    console.error('Error sending birthday selection notifications:', error);
+    return { success: false, error: 'Failed to send selection notifications' };
+  }
+}
+
+/**
+ * Send notification email to user for their selected birthdays
+ */
+async function sendSelectionNotificationEmail(email: string, birthdays: any[]) {
+  if (!resendConfig.apiKey) return;
+  const birthdayList = birthdays.map(b => `<li><b>${b.name}</b> (${b.month}/${b.day})</li>`).join('');
+  const html = `
+    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+      <h2 style="color: #8B4513;">Birthday Reminder</h2>
+      <p>Hi! Here are the birthdays you selected that are happening today:</p>
+      <ul>${birthdayList}</ul>
+      <p>Don't forget to wish them a happy birthday!</p>
+      <p style="color: #999; font-size: 12px; margin-top: 30px;">By Bowl Technologies, Inc.</p>
+    </div>
+  `;
+  await fetch('https://api.resend.com/emails', {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${resendConfig.apiKey}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      from: 'BDQueue <noreply@nijue.me>',
+      to: email,
+      subject: `🎂 Birthday Reminder: ${birthdays.map(b => b.name).join(', ')}`,
+      html,
+    }),
+  });
 }

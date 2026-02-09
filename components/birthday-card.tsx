@@ -1,12 +1,12 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { Button } from '@/components/ui/button';
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from '@/components/ui/popover';
+} from "@/components/ui/popover";
 
 interface Birthday {
   id: number;
@@ -18,79 +18,145 @@ interface Birthday {
 
 interface BirthdayCardProps {
   birthday: Birthday;
+  selected?: boolean;
+  onSelect?: (id: number, checked: boolean) => void;
 }
 
 const monthNames = [
-  'January', 'February', 'March', 'April', 'May', 'June',
-  'July', 'August', 'September', 'October', 'November', 'December'
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
 ];
 
-export function BirthdayCard({ birthday }: BirthdayCardProps) {
+export function BirthdayCard({
+  birthday,
+  selected = false,
+  onSelect,
+}: BirthdayCardProps) {
   const [showWish, setShowWish] = useState(false);
   const monthName = monthNames[birthday.month - 1];
 
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <div className="group cursor-pointer">
-          <div className="relative overflow-hidden rounded-xl bg-white shadow-md hover:shadow-xl transition-all duration-300 border border-primary/10 hover:border-primary/30 p-6 min-h-48 flex flex-col justify-between hover:-translate-y-1">
-            <div>
-              <p className="text-primary/60 text-sm font-medium uppercase tracking-wide mb-3">{monthName}</p>
-              <p className="text-5xl font-bold text-accent mb-2">{birthday.day}</p>
-            </div>
-            <div>
-              <p className="text-lg font-semibold text-foreground group-hover:text-primary transition-colors">
-                {birthday.name}
-              </p>
-              {birthday.message && (
-                <p className="text-sm text-muted-foreground mt-2 italic">"{birthday.message}"</p>
-              )}
-            </div>
-            
-            {/* Hover indicator */}
-            <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-              <div className="bg-accent/10 text-accent px-3 py-1 rounded-full text-xs font-semibold">
-                Click to wish
+        <div className="group cursor-pointer relative mx-4 my-2">
+          {/* Selection Checkbox */}
+          {onSelect && (
+            <input
+              type="checkbox"
+              checked={selected}
+              onChange={(e) => onSelect(birthday.id, e.target.checked)}
+              className="absolute top-4 left-4 z-10 w-4 h-4 accent-primary border border-border rounded focus:ring-2 focus:ring-red-500"
+              title="Select this birthday"
+            />
+          )}
+          <div
+            className={`relative overflow-hidden rounded-2xl bg-card border transition-all duration-300 hover:shadow-lg hover:scale-[1.02] active:scale-[0.99] ${
+              selected
+                ? "border-foreground shadow-md"
+                : "border-border/50 hover:border-border shadow-sm"
+            }`}
+          >
+            <div className="p-6 flex items-center justify-between gap-6">
+              {/* Date Section */}
+              <div className="flex flex-col items-center justify-center min-w-[72px]">
+                <span className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
+                  {monthName.slice(0, 3)}
+                </span>
+                <span className="text-4xl font-bold text-foreground mt-1 tabular-nums">
+                  {birthday.day}
+                </span>
+              </div>
+
+              {/* Name Section */}
+              <div className="flex-1 min-w-0">
+                <h4 className="text-lg font-semibold text-foreground truncate">
+                  {birthday.name}
+                </h4>
+                {birthday.message && (
+                  <p className="text-sm text-muted-foreground mt-1 line-clamp-1">
+                    {birthday.message}
+                  </p>
+                )}
+              </div>
+
+              {/* Arrow Indicator */}
+              <div className="opacity-50 group-hover:opacity-100 transition-opacity duration-200">
+                <svg
+                  className="w-5 h-5 text-muted-foreground"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M9 5l7 7-7 7"
+                  />
+                </svg>
               </div>
             </div>
-
-            {/* Decorative element */}
-            <div className="absolute -bottom-6 -right-6 w-20 h-20 bg-primary/5 rounded-full blur-lg group-hover:bg-primary/10 transition-colors" />
           </div>
         </div>
       </PopoverTrigger>
-      <PopoverContent className="w-80 p-6 space-y-4">
-        <div>
-          <h3 className="text-2xl font-bold text-foreground">{birthday.name}'s Birthday</h3>
-          <p className="text-primary font-semibold text-lg mt-1">
-            {monthName} {birthday.day}
-          </p>
-        </div>
-
-        {birthday.message && (
-          <div className="bg-secondary/50 rounded-lg p-4 border border-primary/10">
-            <p className="text-foreground italic">"{birthday.message}"</p>
-          </div>
-        )}
-
-        <p className="text-sm text-muted-foreground">
-          Ready to celebrate? Send {birthday.name} some birthday love!
-        </p>
-
-        <Button
-          onClick={() => setShowWish(true)}
-          className="w-full bg-accent hover:bg-accent/90 text-accent-foreground font-semibold py-2 rounded-lg transition-colors"
-        >
-          {showWish ? '🎉 Wishing Happy Birthday!' : 'Wish Happy Birthday 🎉'}
-        </Button>
-
-        {showWish && (
-          <div className="bg-accent/10 border border-accent/30 rounded-lg p-4 text-center animate-in fade-in">
-            <p className="text-sm font-semibold text-accent">
-              ✨ Your wishes have been sent! ✨
+      <PopoverContent className="w-72 p-0 border-0 shadow-2xl overflow-hidden">
+        <div className="bg-gradient-to-br from-background to-muted/30 backdrop-blur-xl">
+          {/* Header Section */}
+          <div className="px-6 pt-6 pb-4 border-b border-border/50">
+            <h3 className="text-xl font-semibold text-foreground tracking-tight">
+              {birthday.name}
+            </h3>
+            <p className="text-sm text-muted-foreground mt-0.5 font-medium">
+              {monthName} {birthday.day}
             </p>
           </div>
-        )}
+
+          {/* Message Section */}
+          {birthday.message && (
+            <div className="px-6 py-4 bg-muted/20">
+              <p className="text-sm text-foreground/80 leading-relaxed">
+                {birthday.message}
+              </p>
+            </div>
+          )}
+
+          {/* Action Section */}
+          <div className="px-6 py-5 space-y-3">
+            <Button
+              onClick={() => setShowWish(true)}
+              className="w-full h-10 bg-foreground hover:bg-foreground/90 text-background font-medium rounded-lg transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]"
+            >
+              {showWish ? "Wish Sent" : "Send Birthday Wish"}
+            </Button>
+
+            {showWish && (
+              <div className="flex items-center justify-center gap-2 text-sm text-muted-foreground animate-in fade-in slide-in-from-bottom-2 duration-300">
+                <svg
+                  className="w-4 h-4 text-green-500"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+                <span>Wishes delivered</span>
+              </div>
+            )}
+          </div>
+        </div>
       </PopoverContent>
     </Popover>
   );
