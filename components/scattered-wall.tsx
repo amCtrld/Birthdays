@@ -164,7 +164,7 @@ export function ScatteredWall({ birthdays, onWishSent }: ScatteredWallProps) {
                 <div className="w-10 h-10 rounded-full bg-foreground/5 flex items-center justify-center text-lg">
                   🎂
                 </div>
-                <h4 className="text-2xl font-semibold text-foreground tracking-tight">
+                <h4 className="text-2xl font-semibold text-muted-foreground tracking-tight">
                   {birthday.name}
                 </h4>
               </div>
