@@ -64,7 +64,7 @@ export function BirthdayCard({
           <div
             className={`relative overflow-hidden rounded-2xl bg-card border transition-all duration-300 hover:shadow-lg hover:scale-[1.02] active:scale-[0.99] ${
               selected
-                ? "border-foreground shadow-md"
+                ? "border-2 border-foreground/50 shadow-md"
                 : "border-border/50 hover:border-border shadow-sm"
             }`}
           >
@@ -112,7 +112,7 @@ export function BirthdayCard({
         </div>
       </PopoverTrigger>
       <PopoverContent className="w-72 p-0 border-0 shadow-2xl overflow-hidden">
-        <div className="bg-gradient-to-br from-background to-muted/30 backdrop-blur-xl">
+        <div className="bg-gradient-to-br from-muted/30 to-muted/10 backdrop-blur-xl">
           {/* Header Section */}
           <div className="px-6 pt-6 pb-4 border-b border-border/50">
             <h3 className="text-xl font-semibold text-foreground tracking-tight">
@@ -136,7 +136,7 @@ export function BirthdayCard({
           <div className="px-6 py-5 space-y-3">
             <Button
               onClick={() => setShowWish(true)}
-              className="w-full h-10 bg-foreground hover:bg-foreground/90 text-background font-medium rounded-lg transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]"
+              className="w-full h-10 bg-foreground/50 hover:bg-foreground/90 text-background font-medium rounded-lg transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]"
             >
               {showWish ? "Wish Sent" : "Send Birthday Wish"}
             </Button>
