@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { Timeline } from '@/components/ui/timeline';
-import { ChevronDown } from 'lucide-react';
-import { sendBirthdayWish } from '@/app/actions/birthday-actions';
+import { useState } from "react";
+import { Timeline } from "@/components/ui/timeline";
+import { ChevronDown } from "lucide-react";
+import { sendBirthdayWish } from "@/app/actions/birthday-actions";
 
 interface Birthday {
   id: string;
@@ -20,51 +20,22 @@ interface ScatteredWallProps {
 }
 
 const monthNames = [
-  'January', 'February', 'March', 'April', 'May', 'June',
-  'July', 'August', 'September', 'October', 'November', 'December'
-];
-
-// Birthday color palette for variety
-const birthdayColors = [
-  'from-pink-700 to-rose-800',
-  'from-purple-700 to-indigo-700',
-  'from-blue-700 to-cyan-700',
-  'from-green-700 to-emerald-700',
-  'from-yellow-700 to-orange-700',
-  'from-red-700 to-pink-700',
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
 ];
 
 function formatDate(month: number, day: number): string {
   return `${monthNames[month - 1]} ${day}`;
-}
-
-// Confetti emoji for decoration
-const confettiEmojis  = [
-  // Party & Celebration
-  '🎉', '🎊', '🥳', '✨', '💫', '🌟', '🎶', '🎵',
-
-  // Cakes & Sweets
-  '🎂', '🍰', '🧁', '🍩', '🍪', '🍬', '🍫', '🍭',
-
-  // Balloons & Decorations
-  '🎈', '🎀', '🎏', '🎐', '🎇', '🎆',
-
-  // Gifts & Surprises
-  '🎁', '💝', '💖', '💐', '🌹',
-
-  // Drinks & Toasts
-  '🍷', '🥂', '🍾', '🍸', '🍹', '🍺',
-
-  // Happy Faces
-  '😊', '😃', '😁', '😎', '🤩', '😍',
-
-  // Extra Festive Touches
-  '👑', '🎤', '🎧'
-];
-
-
-function getRandomConfetti() {
-  return confettiEmojis[Math.floor(Math.random() * confettiEmojis.length)];
 }
 
 // Check if a birthday is today
@@ -74,12 +45,12 @@ function isBirthdayToday(month: number, day: number): boolean {
 }
 
 // Component to handle wish button
-function WishButton({ 
-  birthdayId, 
-  initialCount, 
-  onWishSent 
-}: { 
-  birthdayId: string; 
+function WishButton({
+  birthdayId,
+  initialCount,
+  onWishSent,
+}: {
+  birthdayId: string;
   initialCount: number;
   onWishSent?: () => void;
 }) {
@@ -89,7 +60,7 @@ function WishButton({
 
   const handleWish = async () => {
     if (isWishing) return;
-    
+
     setIsWishing(true);
     try {
       const result = await sendBirthdayWish(birthdayId);
@@ -99,7 +70,7 @@ function WishButton({
         onWishSent?.();
       }
     } catch (error) {
-      console.error('Error sending wish:', error);
+      console.error("Error sending wish:", error);
     } finally {
       setIsWishing(false);
     }
@@ -110,21 +81,22 @@ function WishButton({
       onClick={handleWish}
       disabled={isWishing}
       className={`
-        mt-4 inline-flex items-center gap-2 
-        ${hasWished 
-          ? 'bg-green-500/30 cursor-default' 
-          : 'bg-white/20 hover:bg-white/30 cursor-pointer hover:scale-105'
+        mt-6 inline-flex items-center gap-2.5 
+        ${
+          hasWished
+            ? "bg-emerald-500/10 border-emerald-500/20 text-emerald-600 dark:text-emerald-400"
+            : "bg-foreground text-background hover:bg-foreground/90"
         }
-        backdrop-blur-sm rounded-full 
-        px-5 py-2.5 text-white text-sm md:text-base font-semibold
-        transition-all duration-200 active:scale-95
-        disabled:opacity-70
+        border rounded-xl 
+        px-5 py-2.5 text-sm font-medium
+        transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]
+        disabled:opacity-70 disabled:cursor-not-allowed
       `}
     >
-      <span className="text-lg">{hasWished ? '✅' : '🎂'}</span>
-      <span>{hasWished ? 'Wished!' : 'Wish Happy Birthday'}</span>
+      <span className="text-base">{hasWished ? "✓" : "→"}</span>
+      <span>{hasWished ? "Wish sent" : "Send wish"}</span>
       {wishCount > 0 && (
-        <span className="bg-white/30 px-2 py-0.5 rounded-full text-xs">
+        <span className="bg-background/20 px-2 py-0.5 rounded-md text-xs font-semibold">
           {wishCount}
         </span>
       )}
@@ -135,23 +107,23 @@ function WishButton({
 // Component to handle expandable message
 function ExpandableMessage({ message }: { message: string }) {
   const [expanded, setExpanded] = useState(false);
-  const needsExpansion = message.length > 20;
-  const displayText = expanded ? message : message.slice(0, 20);
+  const needsExpansion = message.length > 100;
+  const displayText = expanded ? message : message.slice(0, 100);
 
   return (
-    <div className="text-sm md:text-lg text-white/95 font-medium leading-relaxed max-w-md px-4">
+    <div className="text-sm text-muted-foreground leading-relaxed max-w-md">
       <p>
         {displayText}
-        {!expanded && needsExpansion && '...'}
+        {!expanded && needsExpansion && "..."}
       </p>
       {needsExpansion && (
         <button
           onClick={() => setExpanded(!expanded)}
-          className="mt-2 flex items-center gap-1 mx-auto text-white/80 hover:text-white transition-colors text-sm"
+          className="mt-2 flex items-center gap-1 text-foreground/60 hover:text-foreground transition-colors text-xs font-medium"
         >
-          <span>{expanded ? 'Show less' : 'Show more'}</span>
-          <ChevronDown 
-            className={`w-4 h-4 transition-transform duration-200 ${expanded ? 'rotate-180' : ''}`} 
+          <span>{expanded ? "Show less" : "Read more"}</span>
+          <ChevronDown
+            className={`w-3.5 h-3.5 transition-transform duration-200 ${expanded ? "rotate-180" : ""}`}
           />
         </button>
       )}
@@ -161,84 +133,68 @@ function ExpandableMessage({ message }: { message: string }) {
 
 export function ScatteredWall({ birthdays, onWishSent }: ScatteredWallProps) {
   const timelineData = birthdays.map((birthday, index) => {
-    const colorClass = birthdayColors[index % birthdayColors.length];
-    const leftEmoji = getRandomConfetti();
-    const rightEmoji = getRandomConfetti();
     const isToday = isBirthdayToday(birthday.month, birthday.day);
-    
+
     return {
       title: formatDate(birthday.month, birthday.day),
       content: (
         <div className="relative group">
-          {/* Animated background gradient card */}
-          <div className={`
-            relative overflow-hidden rounded-2xl p-6 md:p-8
-            bg-gradient-to-br ${colorClass}
-            shadow-lg hover:shadow-2xl
-            transition-all duration-300 hover:scale-105
-            border-4 border-white/50 dark:border-neutral-800
-          `}>
-            {/* Sparkle effect overlay */}
-            <div className="absolute inset-0 opacity-20">
-              <div className="absolute top-0 left-0 w-full h-full 
-                bg-[radial-gradient(circle_at_50%_50%,rgba(255,255,255,0.8),transparent_50%)]
-                animate-pulse"
-              />
-            </div>
-            
-            {/* Decorative confetti emojis */}
-            <div className="absolute top-2 left-2 text-2xl md:text-3xl animate-bounce">
-              {leftEmoji}
-            </div>
-            <div className="absolute top-2 right-2 text-2xl md:text-3xl animate-bounce" 
-                 style={{ animationDelay: '0.2s' }}>
-              {rightEmoji}
-            </div>
-            
+          {/* Main card */}
+          <div
+            className={`
+            relative overflow-hidden rounded-2xl 
+            bg-gradient-to-br from-muted/70 via-muted/30 to-muted/10
+            border transition-all duration-300
+            ${
+              isToday
+                ? "border-foreground shadow-lg hover:shadow-xl"
+                : "border-border/50 hover:border-border shadow-sm hover:shadow-md"
+            }
+          `}
+          >
+            {/* Today indicator */}
+            {isToday && (
+              <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-foreground to-transparent" />
+            )}
+
             {/* Content */}
-            <div className="relative z-10 flex flex-col items-center text-center">
-              <div className="mb-3 text-4xl md:text-5xl animate-bounce" 
-                   style={{ animationDelay: '0.1s' }}>
-                🎂
+            <div className="relative p-8">
+              {/* Name section */}
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-10 h-10 rounded-full bg-foreground/5 flex items-center justify-center text-lg">
+                  🎂
+                </div>
+                <h4 className="text-2xl font-semibold text-foreground tracking-tight">
+                  {birthday.name}
+                </h4>
               </div>
-              
-              <h4 className="text-xl md:text-3xl font-bold text-white mb-2 
-                           drop-shadow-lg tracking-wide">
-                {birthday.name}
-              </h4>
-              
-              <div className="w-16 h-1 bg-white/50 rounded-full mb-4" />
-              
+
+              {/* Message */}
               {birthday.message && (
-                <ExpandableMessage message={birthday.message} />
-              )}
-              
-              {/* Birthday wish button - only show for today's birthdays */}
-              {isToday ? (
-                <WishButton 
-                  birthdayId={birthday.id} 
-                  initialCount={birthday.wishCount || 0}
-                  onWishSent={onWishSent}
-                />
-              ) : (
-                /* Birthday badge for non-today birthdays */
-                <div className="mt-4 inline-flex items-center gap-2 
-                              bg-white/20 backdrop-blur-sm rounded-full 
-                              px-4 py-2 text-white text-xs md:text-sm font-semibold">
-                  <span>🎈</span>
-                  <span>Happy Birthday!</span>
-                  <span>🎈</span>
+                <div className="mb-4">
+                  <ExpandableMessage message={birthday.message} />
                 </div>
               )}
+
+              {/* Action area */}
+              <div className="flex items-center justify-between pt-4 border-t border-border/50">
+                {isToday ? (
+                  <WishButton
+                    birthdayId={birthday.id}
+                    initialCount={birthday.wishCount || 0}
+                    onWishSent={onWishSent}
+                  />
+                ) : (
+                  <div className="inline-flex items-center gap-2 text-sm text-muted-foreground">
+                    <span className="w-1.5 h-1.5 rounded-full bg-muted-foreground/40" />
+                    <span>Upcoming</span>
+                  </div>
+                )}
+              </div>
             </div>
-            
-            {/* Animated corner decorations */}
-            <div className="absolute bottom-0 left-0 w-20 h-20 
-                          bg-white/10 rounded-tr-full blur-2xl 
-                          group-hover:scale-150 transition-transform duration-500" />
-            <div className="absolute top-0 right-0 w-20 h-20 
-                          bg-white/10 rounded-bl-full blur-2xl 
-                          group-hover:scale-150 transition-transform duration-500" />
+
+            {/* Subtle gradient overlay on hover */}
+            <div className="absolute inset-0 bg-gradient-to-br from-foreground/0 via-transparent to-foreground/0 opacity-0 group-hover:opacity-[0.02] transition-opacity duration-300 pointer-events-none" />
           </div>
         </div>
       ),
@@ -246,45 +202,10 @@ export function ScatteredWall({ birthdays, onWishSent }: ScatteredWallProps) {
   });
 
   return (
-    <div className="relative w-full overflow-clip flex justify-center">
-      {/* Floating background decorations */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-10 left-[10%] text-4xl opacity-20 animate-float">
-          🎈
-        </div>
-        <div className="absolute top-32 right-[15%] text-5xl opacity-20 animate-float" 
-             style={{ animationDelay: '1s' }}>
-          🎉
-        </div>
-        <div className="absolute top-64 left-[20%] text-3xl opacity-20 animate-float" 
-             style={{ animationDelay: '2s' }}>
-          🎁
-        </div>
-        <div className="absolute bottom-32 right-[25%] text-4xl opacity-20 animate-float" 
-             style={{ animationDelay: '1.5s' }}>
-          🎊
-        </div>
-      </div>
-      
-      <div className="w-full md:max-w-[50%] relative z-10">
+    <div className="relative w-full flex justify-center py-8">
+      <div className="w-full md:max-w-[50%] relative">
         <Timeline data={timelineData} />
       </div>
-      
-      {/* Add custom animation styles */}
-      <style jsx>{`
-        @keyframes float {
-          0%, 100% {
-            transform: translateY(0px) rotate(0deg);
-          }
-          50% {
-            transform: translateY(-20px) rotate(5deg);
-          }
-        }
-        
-        .animate-float {
-          animation: float 3s ease-in-out infinite;
-        }
-      `}</style>
     </div>
   );
 }
