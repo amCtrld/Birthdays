@@ -3,8 +3,9 @@
 import { useState } from 'react';
 import { BirthdayCard } from './birthday-card';
 
+
 interface Birthday {
-  id: number;
+  id: string;
   name: string;
   month: number;
   day: number;
