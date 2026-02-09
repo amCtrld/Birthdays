@@ -8,18 +8,20 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 
+
 interface Birthday {
-  id: number;
+  id: string;
   name: string;
   month: number;
   day: number;
   message?: string;
 }
 
+
 interface BirthdayCardProps {
   birthday: Birthday;
   selected?: boolean;
-  onSelect?: (id: number, checked: boolean) => void;
+  onSelect?: (id: string, checked: boolean) => void;
 }
 
 const monthNames = [
